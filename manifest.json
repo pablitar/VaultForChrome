@@ -1,0 +1,20 @@
+{
+  "manifest_version": 2,
+
+  "name": "Leap Motion Integration",
+  "description": "This extension allows using Chrome with the Leap Motion Controller",
+  "version": "1.0",
+
+  "browser_action": {
+    "default_icon": "icon.png"
+  },
+  
+  "background": {
+    "page": "background.html"
+  },
+  
+  "permissions": [
+	"tabs",
+    "<all_urls>"
+  ]
+}
