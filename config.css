@@ -1,0 +1,17 @@
+body {
+	min-width: 357px;
+	overflow-x: hidden;
+	font-family: sans-serif;
+	background-color: cyan;
+}
+  
+.row label {
+	display: inline-block;
+	width: 40%;
+	position: relative;
+	bottom: 7px;
+}
+
+.row input {
+	width: 55%;
+}

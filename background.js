@@ -1,50 +1,57 @@
 (function(Leap){
-
-
-	var speed = 700;
-	var lastTimestamp;
-	var currentFrame;
-    
-    var xCalibration = 0.0
-    
-    var yCalibration = -0.4
+	var self = window.vault = {};
+	var defaultConfig = {
+		speed : 700,
+		xCalibration : 0.0,
+		yCalibration : -0.4,
+		minUpdateInterval : 0.017
+	};
 	
-	var minUpdateInterval = 0.017;
+	self.reloadConfiguration = function(callback) {
+		chrome.storage.sync.get(null, function(items) {
+			self.config = $.extend({}, defaultConfig, items);
+			if(typeof callback === "function") callback();
+		});
+	};
 
-    var performScroll = function(aHand) {
+    self.performScroll = function(aHand) {
         
-        var x = -aHand.palmNormal[0] + xCalibration;
-        var y = -aHand.palmNormal[2] + yCalibration;
+        var x = -aHand.palmNormal[0] + this.config.xCalibration;
+        var y = -aHand.palmNormal[2] + this.config.yCalibration;
 		
 		var speedFactorX = Math.pow(Math.abs(x) + 1, 4)
 		var speedFactorY = Math.pow(Math.abs(y) + 1, 4)
 		
-		var delta = speed * elapsedSeconds();
+		var delta = this.config.speed * this.elapsedSeconds();
         
         chrome.tabs.executeScript({code:"window.scrollBy(" + x * speedFactorX * delta + ", " + y * speedFactorY * delta + ");"});
     };
     
-    var checkScroll = function(aHand) {
+    self.checkScroll = function(aHand) {
          if(aHand.fingers.length >= 4) {
-            performScroll(aHand);
+            this.performScroll(aHand);
          }
     };
 	
-	var elapsedSeconds = function() {
-		return (currentFrame.timestamp - lastTimestamp) / 1000000
-	}
-    
-    Leap.loop(function(frame){
+	self.elapsedSeconds = function() {
+		return (this.currentFrame.timestamp - this.lastTimestamp) / 1000000;
+	};
+	
+	self.reloadConfiguration(function(){
+		Leap.loop(function(frame){
 		
-		if(lastTimestamp == undefined) lastTimestamp = frame.timestamp;
-		currentFrame = frame;
+			if(self.lastTimestamp == undefined) self.lastTimestamp = frame.timestamp;
+			self.currentFrame = frame;
         
-		if(elapsedSeconds() > minUpdateInterval) {
+			if(self.elapsedSeconds() > self.config.minUpdateInterval) {
 
-			if(frame.hands.length > 0) {
-				checkScroll(frame.hands[0]);
+				if(frame.hands.length > 0) {
+					self.checkScroll(frame.hands[0]);
+				}
+				self.lastTimestamp = frame.timestamp;			
 			}
-			lastTimestamp = frame.timestamp;			
-		}
-    });
+		});
+	});
+    
+    
 })(Leap);
