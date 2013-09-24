@@ -1,4 +1,4 @@
-LeapMotionChromeExtension
+Vault for Chrome - Leap Motion Controller Integration for Chrome
 =========================
 
 A simple extension for using the Leap Motion Controller with Chrome.
