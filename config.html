@@ -16,18 +16,28 @@
 	<h2>Configuration</h2>
 	<div class="content">
 		<div class="row">
-			<label for="sensitivity">Scroll Sensitivity</label>
+			<label class="slider-label" for="sensitivity">Scroll Sensitivity</label>
 			<input id="sensitivity" type="range" name="sensitivity" min="100" max="5000" step="100" />
 		</div>
 		
 		<div class="row">
-			<label for="refresh-rate">Refresh Rate</label>
-			<input id="refresh-rate" type="range" name="refresh-rate" min="20" max="60" step="3" />
+			<label class="slider-label" for="refresh-rate">Refresh Rate</label>
+			<input id="refresh-rate" type="range" name="refresh-rate" min="20" max="70" step="1" />
 		</div>
 		
 		<div class="row">
-			<label for="vertical-bias">Scroll Vertical Bias</label>
+			<label class="slider-label" for="vertical-bias">Scroll Vertical Bias</label>
 			<input id="vertical-bias" type="range" name="vertical-bias" min="-1.0" max="1.0" step="0.1"/>
+		</div>
+		
+		<div class="row">
+			<label for="enable-vertical-scroll">Enable Vertical Scroll</label>
+			<input id="enable-vertical-scroll" type="checkbox" name="enable-vertical-scroll" />
+		</div>
+		
+		<div class="row">
+			<label for="enable-horizontal-scroll">Enable Horizontal Scroll</label>
+			<input id="enable-horizontal-scroll" type="checkbox" name="enable-horizontal-scroll" />
 		</div>
 	</div>
   </body>

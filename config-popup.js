@@ -30,6 +30,16 @@ window.vault = chrome.extension.getBackgroundPage().vault;
 		});
 	};
 	
+	self.bindCheckbox = function(checkboxId, configParameterName) {
+		var checkbox = document.getElementById(checkboxId);
+		
+		checkbox.checked = vault.config[configParameterName];
+		
+		checkbox.addEventListener("change", function(ev) {
+			self.setConfigParameter(configParameterName, ev.target.checked);
+		});
+	}
+	
 	self.setConfigParameter = function(name, value, callback) {
 		var param = {};
 		param[name] = value;
@@ -52,6 +62,9 @@ window.vault = chrome.extension.getBackgroundPage().vault;
 		});
 		
 		self.bindSlider("vertical-bias", "yCalibration", floatAdapter);
+		
+		self.bindCheckbox("enable-vertical-scroll", "enableVerticalScroll");
+		self.bindCheckbox("enable-horizontal-scroll", "enableHorizontalScroll");
 	});
 
 })();
