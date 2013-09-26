@@ -7,6 +7,9 @@
 		minUpdateInterval : 0.017,
 		enableVerticalScroll : true,
 		enableHorizontalScroll : true,
+		invertVerticalScroll : false,
+		invertHorizontalScroll : false,
+		enableCircleGestures: true,
 		tabSwitchInterval : 500000
 	};
 	
@@ -18,12 +21,20 @@
 	};
 
     self.performScroll = function(aHand) {
-        
-        var x = -aHand.palmNormal[0] + this.config.xCalibration;
-        var y = -aHand.palmNormal[2] + this.config.yCalibration;
+	
+		function axisValue(normalValue, calibration, invert) {
+			return (-normalValue + calibration) * (invert?-1:1);
+		}
 		
-		var speedFactorX = this.config.enableHorizontalScroll?Math.pow(Math.abs(x) + 1, 4):0;
-		var speedFactorY = this.config.enableVerticalScroll?Math.pow(Math.abs(y) + 1, 4):0;
+		function speedFactor(enabled, axisValue) {
+			return enabled?Math.pow(Math.abs(axisValue) + 1, 4):0;
+		}
+        
+        var x = axisValue(aHand.palmNormal[0], this.config.xCalibration, this.config.invertHorizontalScroll);
+        var y = axisValue(aHand.palmNormal[2], this.config.yCalibration, this.config.invertVerticalScroll);
+		
+		var speedFactorX = speedFactor(this.config.enableHorizontalScroll, x);
+		var speedFactorY = speedFactor(this.config.enableVerticalScroll, y);
 		
 		var delta = this.config.speed * this.elapsedSeconds();
         
@@ -56,8 +67,7 @@
 	
 	self.startCircleGesture = function(aCircleGesture) {
 		self.currentCircle = aCircleGesture;
-		
-		self.performTabSwitch(aCircleGesture);
+		self.lastTabSwitchStamp = aCircleGesture.duration - self.config.tabSwitchInterval / 1.2;
 	};
 	
 	self.activateTabByIndex = function(tabIndex) {
@@ -99,14 +109,32 @@
 	
 	self.checkGestures = function(gestures) {
 		gestures.forEach(function(aGesture) {
-			if(aGesture.type == "circle") {
+			if(aGesture.type == "circle" && self.config.enableCircleGestures) {
 				self.checkCircle(aGesture);
 			}
 		});
 	};
 	
+	self.initController = function() {
+		self.leapController = new Leap.Controller({
+			enableGestures : true
+		});
+        
+        self.leapController.connect();
+	};
+	
+	self.restartController = function() {
+		if(self.leapController) {
+			self.leapController.disconnect();
+			self.leapController.removeAllListeners();
+		}
+		
+		self.initController();
+	};
+	
 	self.reloadConfiguration(function(){
-		Leap.loop(function(frame){
+		self.restartController();
+		self.leapController.on("frame", function(frame){
 		
 			if(self.lastTimestamp == undefined) self.lastTimestamp = frame.timestamp;
 			self.currentFrame = frame;

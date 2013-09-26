@@ -65,6 +65,13 @@ window.vault = chrome.extension.getBackgroundPage().vault;
 		
 		self.bindCheckbox("enable-vertical-scroll", "enableVerticalScroll");
 		self.bindCheckbox("enable-horizontal-scroll", "enableHorizontalScroll");
+		
+		self.bindCheckbox("invert-vertical-scroll", "invertVerticalScroll");
+		self.bindCheckbox("invert-horizontal-scroll", "invertHorizontalScroll");
+		
+		self.bindCheckbox("enable-circle-gestures", "enableCircleGestures");
+		
+		self.bindSlider("tab-switch-interval", "tabSwitchInterval", floatAdapter);
 	});
 
 })();

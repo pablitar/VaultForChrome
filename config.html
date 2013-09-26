@@ -10,7 +10,7 @@
       -
       - [1]: http://developer.chrome.com/extensions/contentSecurityPolicy.html
      -->
-    <script src="config-popup.js"></script>
+    <script src="config-popup.js" type="text/javascript"></script>
   </head>
   <body>
 	<h2>Configuration</h2>
@@ -38,6 +38,26 @@
 		<div class="row">
 			<label for="enable-horizontal-scroll">Enable Horizontal Scroll</label>
 			<input id="enable-horizontal-scroll" type="checkbox" name="enable-horizontal-scroll" />
+		</div>
+		
+		<div class="row">
+			<label for="invert-vertical-scroll">Invert Vertical Scroll</label>
+			<input id="invert-vertical-scroll" type="checkbox" name="invert-vertical-scroll" />
+		</div>
+		
+		<div class="row">
+			<label for="invert-horizontal-scroll">Invert Horizontal Scroll</label>
+			<input id="invert-horizontal-scroll" type="checkbox" name="invert-horizontal-scroll" />
+		</div>
+		
+		<div class="row">
+			<label for="enable-circle-gestures">Enable Circle Gestures to Switch Tabs</label>
+			<input id="enable-circle-gestures" type="checkbox" name="enable-circle-gestures" />
+		</div>
+		
+		<div class="row">
+			<label class="slider-label" for="tab-switch-interval">Circle Tab Switch Interval</label>
+			<input id="tab-switch-interval" type="range" name="tab-switch-interval" min="100000" max="1000000" step="10000" />
 		</div>
 	</div>
   </body>
