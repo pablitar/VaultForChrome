@@ -72,6 +72,8 @@ window.vault = chrome.extension.getBackgroundPage().vault;
 		self.bindCheckbox("enable-circle-gestures", "enableCircleGestures");
 		
 		self.bindSlider("tab-switch-interval", "tabSwitchInterval", floatAdapter);
+		
+		self.bindCheckbox("enable-swipe-gestures", "enableSwipeGestures");
 	});
 
 })();

@@ -12,3 +12,5 @@ Current features:
 extend four or more fingers (five is the most comfortable position). The
 extension will then use the orientation of your hand to scroll horizontally
 or vertically.
+* Swipe left to navigate back, and swipe right to navigate forward
+* Circle clockwise to move to next tab, and circle counter clockwise to move to previous tab

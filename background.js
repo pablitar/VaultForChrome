@@ -1,4 +1,8 @@
 (function(Leap){
+	var X = 0;
+	var Y = 1;
+	var Z = 2;
+	
 	var self = window.vault = {};
 	var defaultConfig = {
 		speed : 700,
@@ -10,7 +14,8 @@
 		invertVerticalScroll : false,
 		invertHorizontalScroll : false,
 		enableCircleGestures: true,
-		tabSwitchInterval : 500000
+		tabSwitchInterval : 500000,
+		enableSwipeGestures: true
 	};
 	
 	self.reloadConfiguration = function(callback) {
@@ -30,16 +35,20 @@
 			return enabled?Math.pow(Math.abs(axisValue) + 1, 4):0;
 		}
         
-        var x = axisValue(aHand.palmNormal[0], this.config.xCalibration, this.config.invertHorizontalScroll);
-        var y = axisValue(aHand.palmNormal[2], this.config.yCalibration, this.config.invertVerticalScroll);
+        var x = axisValue(aHand.palmNormal[X], this.config.xCalibration, this.config.invertHorizontalScroll);
+        var y = axisValue(aHand.palmNormal[Z], this.config.yCalibration, this.config.invertVerticalScroll);
 		
 		var speedFactorX = speedFactor(this.config.enableHorizontalScroll, x);
 		var speedFactorY = speedFactor(this.config.enableVerticalScroll, y);
 		
 		var delta = this.config.speed * this.elapsedSeconds();
         
-        chrome.tabs.executeScript({code:"window.scrollBy(" + x * speedFactorX * delta + ", " + y * speedFactorY * delta + ");"});
+        self.executeScript("window.scrollBy(" + x * speedFactorX * delta + ", " + y * speedFactorY * delta + ");");
     };
+	
+	self.executeScript = function(code) {
+		chrome.tabs.executeScript({code:code});
+	}
     
     self.checkScroll = function(aHand) {
          if(aHand.fingers.length >= 4) {
@@ -98,7 +107,7 @@
 	};
 	
 	self.performTabSwitch = function(aCircleGesture) {
-		if(aCircleGesture.normal[2] <= 0) {
+		if(aCircleGesture.normal[Z] <= 0) {
 			self.tabNext();
 		} else {
 			self.tabPrevious();
@@ -107,10 +116,26 @@
 		self.lastTabSwitchStamp = aCircleGesture.duration;
 	};
 	
+	self.performNavigation = function(aSwipeGesture) {
+		if(aSwipeGesture.direction[X] > 0) {
+			self.executeScript("history.forward();");
+		} else {
+			self.executeScript("history.back();");
+		}
+	};
+	
+	self.checkSwipe = function(aGesture){
+		if(aGesture.state == "start") {
+			self.performNavigation(aGesture);
+		}
+	};
+	
 	self.checkGestures = function(gestures) {
 		gestures.forEach(function(aGesture) {
 			if(aGesture.type == "circle" && self.config.enableCircleGestures) {
 				self.checkCircle(aGesture);
+			} else if(aGesture.type == "swipe" && self.config.enableSwipeGestures) {
+				self.checkSwipe(aGesture);
 			}
 		});
 	};
