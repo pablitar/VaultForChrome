@@ -2,21 +2,26 @@ body {
 	min-width: 500px;
 	overflow-x: hidden;
 	font-family: sans-serif;
-	background-color: cyan;
-	
-	padding-top:10px;
-	padding-bottom:10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
 }
 
 h2 {
 	margin-top: 0px
 }
-  
+
+.vault-logo-config {
+	vertical-align: middle;
+}
+
+.config-title {
+	margin-left:10px;
+}
 
 .row {
 	height: 40px;
 }
- 
+
 .row label {
 	display: inline-block;
 	width: 40%;
@@ -29,4 +34,24 @@ h2 {
 
 .row input[type="range"] {
 	width: 55%;
+}
+
+.status {
+	border: 1px solid;
+	display: inline-block;
+	vertical-align: middle;
+	padding: 5px;
+	width: 20%;
+	text-align: center;
+	background-color: darkgray;
+}
+
+.toggle-status {
+	width: 35%;
+	padding: 5px;
+	
+}
+
+.status.connected {
+	background-color: lightgreen;
 }

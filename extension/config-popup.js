@@ -1,4 +1,8 @@
-window.vault = chrome.extension.getBackgroundPage().vault;
+if(typeof window.vault === "undefined") {
+	window.vault = {};
+}
+
+window.vault.background = chrome.extension.getBackgroundPage().vault;
 (function() {
 	var self = {};
 	
@@ -17,13 +21,13 @@ window.vault = chrome.extension.getBackgroundPage().vault;
 		adaptToConfig : function(sliderValue) {
 			return parseFloat(sliderValue);
 		}
-	}
+	};
 		
 	self.bindSlider = function(sliderId, configParameterName, adapter) {
 		if(!adapter) adapter = idAdapter;
 		var slider = document.getElementById(sliderId);
 		
-		slider.value = adapter.adaptFromConfig(vault.config[configParameterName]);
+		slider.value = adapter.adaptFromConfig(vault.background.config[configParameterName]);
 		
 		slider.addEventListener("change", function(ev) {
 			self.setConfigParameter(configParameterName, adapter.adaptToConfig(ev.target.value));
@@ -33,23 +37,56 @@ window.vault = chrome.extension.getBackgroundPage().vault;
 	self.bindCheckbox = function(checkboxId, configParameterName) {
 		var checkbox = document.getElementById(checkboxId);
 		
-		checkbox.checked = vault.config[configParameterName];
+		checkbox.checked = vault.background.config[configParameterName];
 		
 		checkbox.addEventListener("change", function(ev) {
 			self.setConfigParameter(configParameterName, ev.target.checked);
 		});
-	}
+	};
 	
 	self.setConfigParameter = function(name, value, callback) {
 		var param = {};
 		param[name] = value;
 		chrome.storage.sync.set(param, function() {
-			vault.reloadConfiguration();
+			vault.background.reloadConfiguration();
 			if(typeof callback === "function") callback();
 		});
 	};
+	
+	self.configureStatusWidget = function() {
+		self.statusToggle = widgets.createToggle($("#toggle-status"), {
+			value: function() {
+				return vault.background.isConnected();		
+			},
+			whenEnabled: function() {
+				vault.background.disconnect();
+			},
+			whenDisabled: function() {
+				vault.background.connect();
+			},
+			enabledText: "Disconnect",
+			disabledText: "Connect"
+		});
+		
+		self.statusDisplay = widgets.createStatusDisplay($("#status"), {
+			value: function() {
+				return vault.background.isConnected()?"connected":"disconnected";
+			},
+			//TODO: This is ugly
+			values: ["connected", "disconnected"]
+		});
+		
+		var refreshValues = function() {
+			self.statusToggle.refreshValue();
+			self.statusDisplay.refreshValue();
+		};
+		
+		vault.background.on("connectionStatusUpdated", refreshValues);
+		
+		refreshValues();
+	};
 
-	vault.reloadConfiguration(function(){
+	vault.background.reloadConfiguration(function(){
 		self.bindSlider("sensitivity", "speed", floatAdapter);
 		self.bindSlider("refresh-rate", "minUpdateInterval", {
 			adaptFromConfig: function(updateInterval) {
@@ -74,6 +111,7 @@ window.vault = chrome.extension.getBackgroundPage().vault;
 		self.bindSlider("tab-switch-interval", "tabSwitchInterval", floatAdapter);
 		
 		self.bindCheckbox("enable-swipe-gestures", "enableSwipeGestures");
+		self.configureStatusWidget();
 	});
 
 })();

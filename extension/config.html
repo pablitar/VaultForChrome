@@ -1,69 +1,79 @@
 <!doctype html>
 <html>
-  <head>
-    <title>Vault's Configuration</title>
-	<link rel="stylesheet" type="text/css" href="config.css">
+	<head>
+		<title>Vault's Configuration</title>
+		<link rel="stylesheet" type="text/css" href="config.css">
 
-    <!--
-      - JavaScript and HTML must be in separate files: see our Content Security
-      - Policy documentation[1] for details and explanation.
-      -
-      - [1]: http://developer.chrome.com/extensions/contentSecurityPolicy.html
-     -->
-    <script src="config-popup.js" type="text/javascript"></script>
-  </head>
-  <body>
-	<h2>Configuration</h2>
-	<div class="content">
-		<div class="row">
-			<label class="slider-label" for="sensitivity">Scroll Sensitivity</label>
-			<input id="sensitivity" type="range" name="sensitivity" min="100" max="5000" step="100" />
+		<!--
+		- JavaScript and HTML must be in separate files: see our Content Security
+		- Policy documentation[1] for details and explanation.
+		-
+		- [1]: http://developer.chrome.com/extensions/contentSecurityPolicy.html
+		-->
+		<script src="jquery-2.0.3.min.js" type="text/javascript"></script>
+		<script src="js/utils.js" type="text/javascript"></script>
+		<script src="js/widgets.js" type="text/javascript"></script>
+		<script src="config-popup.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<h2><img class="vault-logo-config" src="icons/vault-logo-config.png"></img><span class="config-title">Vault - Configuration</span></h2>
+		<div class="content">
+
+			<div class="row">
+				<label> Status: </label>
+				<span id="status" class="status connected">Connected</span>
+				<button class="toggle-status" id="toggle-status">Disconnect</button>
+			</div>
+
+			<div class="row">
+				<label class="slider-label" for="sensitivity">Scroll Sensitivity</label>
+				<input id="sensitivity" type="range" name="sensitivity" min="100" max="5000" step="100" />
+			</div>
+
+			<div class="row">
+				<label class="slider-label" for="refresh-rate">Refresh Rate</label>
+				<input id="refresh-rate" type="range" name="refresh-rate" min="20" max="70" step="1" />
+			</div>
+
+			<div class="row">
+				<label class="slider-label" for="vertical-bias">Scroll Vertical Bias</label>
+				<input id="vertical-bias" type="range" name="vertical-bias" min="-1.0" max="1.0" step="0.1"/>
+			</div>
+
+			<div class="row">
+				<label for="enable-vertical-scroll">Enable Vertical Scroll</label>
+				<input id="enable-vertical-scroll" type="checkbox" name="enable-vertical-scroll" />
+			</div>
+
+			<div class="row">
+				<label for="enable-horizontal-scroll">Enable Horizontal Scroll</label>
+				<input id="enable-horizontal-scroll" type="checkbox" name="enable-horizontal-scroll" />
+			</div>
+
+			<div class="row">
+				<label for="invert-vertical-scroll">Invert Vertical Scroll</label>
+				<input id="invert-vertical-scroll" type="checkbox" name="invert-vertical-scroll" />
+			</div>
+
+			<div class="row">
+				<label for="invert-horizontal-scroll">Invert Horizontal Scroll</label>
+				<input id="invert-horizontal-scroll" type="checkbox" name="invert-horizontal-scroll" />
+			</div>
+
+			<div class="row">
+				<label for="enable-circle-gestures">Enable Circle Gestures to Switch Tabs</label>
+				<input id="enable-circle-gestures" type="checkbox" name="enable-circle-gestures" />
+			</div>
+
+			<div class="row">
+				<label class="slider-label" for="tab-switch-interval">Circle Tab Switch Interval</label>
+				<input id="tab-switch-interval" type="range" name="tab-switch-interval" min="100000" max="1000000" step="10000" />
+			</div>
+
+			<div class="row">
+				<label for="enable-swipe-gestures">Enable Swipe Gestures to Navigate Back and Forth</label>
+				<input id="enable-swipe-gestures" type="checkbox" name="enable-swipe-gestures" />
+			</div>
 		</div>
-		
-		<div class="row">
-			<label class="slider-label" for="refresh-rate">Refresh Rate</label>
-			<input id="refresh-rate" type="range" name="refresh-rate" min="20" max="70" step="1" />
-		</div>
-		
-		<div class="row">
-			<label class="slider-label" for="vertical-bias">Scroll Vertical Bias</label>
-			<input id="vertical-bias" type="range" name="vertical-bias" min="-1.0" max="1.0" step="0.1"/>
-		</div>
-		
-		<div class="row">
-			<label for="enable-vertical-scroll">Enable Vertical Scroll</label>
-			<input id="enable-vertical-scroll" type="checkbox" name="enable-vertical-scroll" />
-		</div>
-		
-		<div class="row">
-			<label for="enable-horizontal-scroll">Enable Horizontal Scroll</label>
-			<input id="enable-horizontal-scroll" type="checkbox" name="enable-horizontal-scroll" />
-		</div>
-		
-		<div class="row">
-			<label for="invert-vertical-scroll">Invert Vertical Scroll</label>
-			<input id="invert-vertical-scroll" type="checkbox" name="invert-vertical-scroll" />
-		</div>
-		
-		<div class="row">
-			<label for="invert-horizontal-scroll">Invert Horizontal Scroll</label>
-			<input id="invert-horizontal-scroll" type="checkbox" name="invert-horizontal-scroll" />
-		</div>
-		
-		<div class="row">
-			<label for="enable-circle-gestures">Enable Circle Gestures to Switch Tabs</label>
-			<input id="enable-circle-gestures" type="checkbox" name="enable-circle-gestures" />
-		</div>
-		
-		<div class="row">
-			<label class="slider-label" for="tab-switch-interval">Circle Tab Switch Interval</label>
-			<input id="tab-switch-interval" type="range" name="tab-switch-interval" min="100000" max="1000000" step="10000" />
-		</div>
-		
-		<div class="row">
-			<label for="enable-swipe-gestures">Enable Swipe Gestures to Navigate Back and Forth</label>
-			<input id="enable-swipe-gestures" type="checkbox" name="enable-swipe-gestures" />
-		</div>
-	</div>
-  </body>
+	</body>
 </html>
