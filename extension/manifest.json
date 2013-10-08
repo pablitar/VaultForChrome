@@ -7,8 +7,8 @@
 
   "browser_action": {
     "default_icon": {
-      "19": "icons/vault-logo19.png",
-      "38": "icons/vault-logo38.png"
+      "19": "icons/vault-disconnected-19.png",
+      "38": "icons/vault-disconnected-38.png"
     },
 	"default_popup": "config.html"
   },

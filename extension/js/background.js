@@ -163,9 +163,29 @@
 			}
 		});
 	};
+	
+	self.updateIcon = function() {
+		function iconsRes(iconName) {
+			return ["19","38"].reduce(function(object, resolution){
+				object[resolution] = "icons/" + iconName + "-" + resolution + ".png";
+				
+				return object;
+			},{});
+		}
+		
+		var icon;
+		if(self.connected) {
+			icon = "vault-connected";
+		} else {
+			icon = "vault-disconnected";
+		}
+		
+		chrome.browserAction.setIcon({path:iconsRes(icon)});
+	};
 
 	self.triggerStatusUpdate = function() {
 		self.trigger("connectionStatusUpdated", self.connected);
+		self.updateIcon();
 	};
 
 	self.initController = function() {
@@ -223,8 +243,6 @@
 			self.initController();
 		}
 	};
-	
-
 
 	self.reloadConfiguration(function() {
 		self.restartController();
